@@ -16,9 +16,8 @@ const getBooks = () => new Promise((resolve, reject) => {
 });
 
 // TODO: DELETE BOOK
-const deleteBook = () => new Promise((resolve, reject) => {
-  // eslint-disable-next-line no-undef
-  fetch(`${endpoint}/books/${firebasekey}.json`, {
+const deleteBook = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/books/${firebaseKey}.json`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -52,7 +51,7 @@ const createBook = (payload) => new Promise((resolve, reject) => {
     body: JSON.stringify(payload),
   })
     .then((response) => response.json())
-    .then((response) => resolve(data))
+    .then((data) => resolve(data))
     .catch(reject);
 });
 
@@ -72,7 +71,7 @@ const updateBook = (payload) => new Promise((resolve, reject) => {
 
 // TODO: FILTER BOOKS ON SALE
 const booksOnSale = () => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books.json?orderby="sale"&equalTo=true`, {
+  fetch(`${endpoint}/books.json?orderBy="sale"&equalTo=true`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

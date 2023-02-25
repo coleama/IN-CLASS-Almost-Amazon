@@ -1,4 +1,4 @@
-import { getAuthors, updateAuthor } from '../api/authorData';
+import { createAuthor, getAuthors, updateAuthor } from '../api/authorData';
 import {
   createBook, updateBook, getBooks,
 } from '../api/bookData';
@@ -50,17 +50,33 @@ const formEvents = () => {
     if (e.target.id.includes('submit-author')) {
       const [, firebaseKey] = e.target.id.split('--');
       const payload = {
-        firstName: document.querySelector('#first_name').value,
-        lastName: document.querySelector('#last_name').value,
+        first_name: document.querySelector('#first_name').value,
+        last_name: document.querySelector('#last_name').value,
         email: document.querySelector('#email').value,
         firebaseKey,
       };
 
+      createAuthor(payload).then(({ name }) => {
+        const patchPayload = { firebaseKey: name };
+
+        updateAuthor(patchPayload).then(() => {
+          getAuthors().then(showAuthors);
+        });
+      });
+    }
+    // FIXME:ADD CLICK EVENT FOR EDITING AN AUTHOR
+    if (e.target.id.includes('update-author')) {
+      const [, firebaseKey] = e.target.id.split('--');
+      const payload = {
+        first_name: document.querySelector('#first_name').value,
+        last_name: document.querySelector('#last_name').value,
+        email: document.querySelector('#email').value,
+        firebaseKey,
+      };
       updateAuthor(payload).then(() => {
         getAuthors().then(showAuthors);
       });
     }
-    // FIXME:ADD CLICK EVENT FOR EDITING AN AUTHOR
   });
 };
 
